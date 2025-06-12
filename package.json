@@ -1,0 +1,33 @@
+{
+  "name": "top-express-inventory-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haip1290/top-express-inventory-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/haip1290/top-express-inventory-app/issues"
+  },
+  "homepage": "https://github.com/haip1290/top-express-inventory-app#readme",
+  "dependencies": {
+    "d": "^1.0.2",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "pg": "^8.16.0"
+  },
+  "devDependencies": {
+    "prettier": "3.5.3",
+    "prettier-plugin-ejs": "^1.0.3"
+  }
+}
