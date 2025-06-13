@@ -11,8 +11,17 @@
   </head>
   <body>
     <h1>
-      Welcome !!! This is
+      Welcome to
       <%= title %>
     </h1>
+    <ul>
+      <% categories.map((category) =>{ %>
+      <li>
+        <a href="/<%= category.name %>?id=<%= category.id %>"
+          ><%= category.name %></a
+        >
+      </li>
+      <% }) %>
+    </ul>
   </body>
 </html>

@@ -2,3 +2,8 @@ create table categories (id integer primary key generated always as identity, na
 
 insert into categories (name)
 values ('weapon'), ('armour'), ('helmet'), ('jewelry'), ('boot');
+
+create table items (id integer primary key
+generated always as identity, name varchar(255), category_id integer, price decimal(10,2), quantity integer, foreign key (category_id) references categories(id));
+
+insert into items (name, category_id, price, quantity) VALUES ('heavy boot', 5, 10,1);
