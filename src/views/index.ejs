@@ -14,12 +14,11 @@
       Welcome to
       <%= title %>
     </h1>
+    <h2>Categories</h2>
     <ul>
       <% categories.map((category) =>{ %>
       <li>
-        <a href="/<%= category.name %>?id=<%= category.id %>"
-          ><%= category.name %></a
-        >
+        <a href="/category/<%= category.id %>"><%= category.name %></a>
       </li>
       <% }) %>
     </ul>

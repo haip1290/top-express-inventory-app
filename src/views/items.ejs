@@ -7,11 +7,11 @@
       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title><%= title %></title>
+    <title><%= categoryName %></title>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <a href="/">Categories</a>
+    <h1><%= categoryName %></h1>
+    <a href="/">View Categories</a>
     <ul>
       <% items.map((item) => { %>
       <li>
@@ -23,5 +23,33 @@
       </li>
       <% }) %>
     </ul>
+    <fieldset>
+      <legend>Add Item</legend>
+      <form action="/category/<%= categoryId %>/add" method="post">
+        <div class="form-control">
+          <label for="item-name">Name: </label>
+          <input type="text" name="name" id="item-name" />
+        </div>
+        <div class="form-control" hidden>
+          <label for="category">Category:</label>
+          <input
+            type="hidden"
+            name="categoryId"
+            id="category"
+            value="<%= categoryId %>"
+          />
+        </div>
+        <div class="form-control">
+          <label for="item-quantity">Quantity: </label>
+          <input type="number" name="quantity" id="item-quantity" />
+        </div>
+        <div class="form-control">
+          <label for="item-price">Price: </label>
+          <input type="number" name="price" id="item-price" />
+        </div>
+
+        <button type="submit">Add</button>
+      </form>
+    </fieldset>
   </body>
 </html>
