@@ -1,5 +1,4 @@
 const pool = require('./pool');
-const { query } = require('express-validator');
 
 const getAllCategories = async () => {
   try {
@@ -82,6 +81,19 @@ const getCategoryNameById = async (id) => {
   }
 };
 
+const deleteItemById = async (id) => {
+  console.log('Deleting item with id', id);
+  try {
+    const { rowCount } = await pool.query('DELETE FROM items WHERE id = $1', [
+      id,
+    ]);
+    console.log(`deleted ${rowCount} item`);
+  } catch (err) {
+    console.log('Error deleting item', err);
+    throw err;
+  }
+};
+
 module.exports = {
   getAllCategories,
   getItemsByCategory,
@@ -89,4 +101,5 @@ module.exports = {
   getCategoryNameById,
   updateItemById,
   getItemById,
+  deleteItemById,
 };

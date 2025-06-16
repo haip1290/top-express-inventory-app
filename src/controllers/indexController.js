@@ -107,6 +107,12 @@ const indexController = {
       return res.redirect(`/category/${item.category_id}`);
     }),
   ],
+  deleteItemById: asyncHandler(async (req, res) => {
+    const itemId = req.params.id;
+    const categoryId = req.query.categoryId;
+    await db.deleteItemById(itemId);
+    return res.redirect(`/category/${categoryId}`);
+  }),
 };
 
 module.exports = indexController;

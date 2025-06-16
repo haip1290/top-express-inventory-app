@@ -8,5 +8,6 @@ indexRoute.get('/item/add', indexController.createItemGet);
 indexRoute.post('/item/add', indexController.createItemPost);
 indexRoute.get('/item/:id/update', indexController.updateItemGet);
 indexRoute.post('/item/:id/update', indexController.updateItemPost);
+indexRoute.post('/item/:id/delete', indexController.deleteItemById);
 
 module.exports = indexRoute;
