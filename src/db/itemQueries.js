@@ -1,17 +1,5 @@
 const pool = require('./pool');
 
-const getAllCategories = async () => {
-  try {
-    const { rows } = await pool.query('SELECT * FROM categories;');
-    return rows.map((row) => ({
-      id: row.id,
-      name: row.name,
-    }));
-  } catch (error) {
-    console.log('Error querying categories', error);
-    throw error;
-  }
-};
 const getItemById = async (id) => {
   console.log('Query item with id', id);
   try {
@@ -68,19 +56,6 @@ const updateItemById = async (id, { name, categoryId, price, quantity }) => {
   }
 };
 
-const getCategoryNameById = async (id) => {
-  try {
-    const { rows } = await pool.query(
-      'SELECT * FROM categories WHERE id = $1',
-      [id],
-    );
-    return rows[0];
-  } catch (err) {
-    console.log('Error getting category', err);
-    throw err;
-  }
-};
-
 const deleteItemById = async (id) => {
   console.log('Deleting item with id', id);
   try {
@@ -95,10 +70,8 @@ const deleteItemById = async (id) => {
 };
 
 module.exports = {
-  getAllCategories,
   getItemsByCategory,
   createItem,
-  getCategoryNameById,
   updateItemById,
   getItemById,
   deleteItemById,

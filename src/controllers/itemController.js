@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
-const db = require('../db/queries');
+const itemQueries = require('../db/itemQueries');
+const categoryQueries = require('../db/categoryQueries');
 const { body, validationResult } = require('express-validator');
 
 const alphaErr = 'must only contain letters';
@@ -23,19 +24,12 @@ const validateItem = [
   body('price').trim().isNumeric().withMessage(`Item price ${numErr}`).escape(),
 ];
 
-const indexController = {
-  index: asyncHandler(async (req, res) => {
-    const categories = await db.getAllCategories();
-    res.render('index', {
-      title: 'Inventory App',
-      categories: categories,
-    });
-  }),
+const itemController = {
   getItemsByCategory: asyncHandler(async (req, res) => {
     const categoryId = req.params.id;
     const categoryName = req.query.name;
 
-    const items = await db.getItemsByCategory(categoryId);
+    const items = await itemQueries.getItemsByCategory(categoryId);
     res.render('items', {
       title: categoryName,
       categoryId: categoryId,
@@ -43,7 +37,7 @@ const indexController = {
     });
   }),
   createItemGet: asyncHandler(async (req, res) => {
-    const categories = await db.getAllCategories();
+    const categories = await categoryQueries.getAllCategories();
     return res.render('createItem', {
       title: 'Add Item',
       categories: categories,
@@ -57,7 +51,7 @@ const indexController = {
 
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        const categories = await db.getAllCategories();
+        const categories = await categoryQueries.getAllCategories();
         return res.status(400).render('createItem', {
           title: 'Add Item',
           categories: categories,
@@ -65,7 +59,7 @@ const indexController = {
         });
       }
 
-      await db.createItem({
+      await itemQueries.createItem({
         name,
         categoryId,
         price,
@@ -77,8 +71,9 @@ const indexController = {
   ],
   updateItemGet: asyncHandler(async (req, res) => {
     console.log('Fetching item to update ...');
-    const item = await db.getItemById(req.params.id);
-    const categories = await db.getAllCategories();
+    const item = await itemQueries.getItemById(req.params.id);
+    const categories = await categoryQueries.getAllCategories();
+
     console.log('Showing editing form');
     return res.render('updateItem', {
       title: 'Editing Item',
@@ -91,7 +86,7 @@ const indexController = {
     asyncHandler(async (req, res) => {
       console.log('Updating Item ...');
       const id = req.params.id;
-      const item = await db.getItemById(id);
+      const item = await itemQueries.getItemById(id);
       const { name, categoryId, price, quantity } = req.body;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -102,7 +97,12 @@ const indexController = {
         });
       }
 
-      await db.updateItemById(id, { name, categoryId, price, quantity });
+      await itemQueries.updateItemById(id, {
+        name,
+        categoryId,
+        price,
+        quantity,
+      });
       console.log('Done updating item');
       return res.redirect(`/category/${item.category_id}`);
     }),
@@ -110,9 +110,9 @@ const indexController = {
   deleteItemById: asyncHandler(async (req, res) => {
     const itemId = req.params.id;
     const categoryId = req.query.categoryId;
-    await db.deleteItemById(itemId);
+    await itemQueries.deleteItemById(itemId);
     return res.redirect(`/category/${categoryId}`);
   }),
 };
 
-module.exports = indexController;
+module.exports = itemController;
