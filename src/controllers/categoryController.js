@@ -21,6 +21,8 @@ const categoryController = {
     res.render('index', {
       title: 'Inventory App',
       categories: categories,
+      query: req.query,
+      error: null,
     });
   }),
   createCategoryGet: asyncHandler(async (req, res) => {
@@ -44,6 +46,28 @@ const categoryController = {
       return res.redirect('/');
     }),
   ],
+  deleteCategoryById: asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    console.log('Deleting category', id);
+    try {
+      await categoryQueries.deletingCategoryById(id);
+      console.log('Done deleting category', id);
+      return res.redirect('/?deleted=true');
+    } catch (err) {
+      if (err.code === '23503') {
+        console.log(`Foreign key violation for category ID ${id}`);
+        const errMsg =
+          'Cannot delete this category because there are items associated with it.';
+        const categories = await categoryQueries.getAllCategories();
+        res.render('index', {
+          title: 'Inventory App',
+          categories: categories,
+          query: req.query,
+          error: errMsg,
+        });
+      }
+    }
+  }),
 };
 
 module.exports = categoryController;

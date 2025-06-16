@@ -35,4 +35,28 @@ const createCategory = async ({ name }) => {
   }
 };
 
-module.exports = { getAllCategories, getCategoryNameById, createCategory };
+const deletingCategoryById = async (id) => {
+  try {
+    console.log('Start query to delete category', id);
+    const { rowCount } = await pool.query(
+      'DELETE FROM categories WHERE id = $1',
+      [id],
+    );
+    console.log(`Deleted ${rowCount} category from db`);
+  } catch (err) {
+    if (err.code === '23503') {
+      console.log(`Foreign key violation for category ID ${id}`);
+      throw err;
+    } else {
+      console.log('Error deleting Category', err, id);
+      throw err;
+    }
+  }
+};
+
+module.exports = {
+  getAllCategories,
+  getCategoryNameById,
+  createCategory,
+  deletingCategoryById,
+};

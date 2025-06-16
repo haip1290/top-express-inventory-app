@@ -15,12 +15,29 @@
       <%= title %>
     </h1>
     <h2>Categories</h2>
+    <% if(error){ %>
+    <div>
+      <strong>Error: </strong
+      ><%= error %>
+    </div>
+    <% } %>
+    <% if(query.deleted){ %>
+    <div>Deleted successfully</div>
+    <% } %>
     <ul>
       <% categories.map((category) =>{ %>
       <li>
         <a href="/category/<%= category.id %>?name=<%= category.name %>"
           ><%= category.name %></a
         >
+        <form action="/category/delete/<%= category.id %>" method="POST">
+          <button
+            type="submit"
+            onclick="return confirm(`deleting ${category.name}`)"
+          >
+            Delete
+          </button>
+        </form>
       </li>
       <% }) %>
     </ul>
