@@ -10,7 +10,7 @@ const validateCategory = [
     .trim()
     .isAlpha('en-US', { ignore: ' ' })
     .withMessage(`Name ${alphaErr}`)
-    .isLength({ min: 1, max: 10 })
+    .isLength({ min: 1, max: 30 })
     .withMessage(`Name ${lengthErr}`)
     .escape(),
 ];
@@ -44,6 +44,41 @@ const categoryController = {
       const { name } = req.body;
       await categoryQueries.createCategory({ name });
       return res.redirect('/');
+    }),
+  ],
+  updateCategoryGet: asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    console.log(`Fetching category with id ${id}`);
+
+    const name = await categoryQueries.getCategoryNameById(id);
+    console.log('Successfully fetch category ', name);
+
+    return res.render('updateCategory', {
+      title: 'Update category',
+      id: id,
+      name: name,
+    });
+  }),
+  updateCategoryPost: [
+    ...validateCategory,
+    asyncHandler(async (req, res) => {
+      const id = req.params.id;
+      const { name } = req.body;
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        console.log('Error updating category ', errors);
+        return res.status(400).render('updateCategory', {
+          title: 'Update category',
+          id: id,
+          name: name,
+          errors: errors.array(),
+        });
+      } else {
+        console.log('Updating category');
+        await categoryQueries.updateCategory({ id, name });
+        console.log('Successfully update category');
+        return res.redirect('/');
+      }
     }),
   ],
   deleteCategoryById: asyncHandler(async (req, res) => {

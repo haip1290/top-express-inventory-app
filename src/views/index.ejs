@@ -30,7 +30,8 @@
         <a href="/category/<%= category.id %>?name=<%= category.name %>"
           ><%= category.name %></a
         >
-        <form action="/category/delete/<%= category.id %>" method="POST">
+        <a href="/category/<%= category.id %>/update">Edit</a>
+        <form action="/category/<%= category.id %>/delete" method="POST">
           <button
             type="submit"
             onclick="return confirm(`deleting ${category.name}`)"

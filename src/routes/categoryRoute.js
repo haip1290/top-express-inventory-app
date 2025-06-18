@@ -5,7 +5,9 @@ const categoryRoute = Router();
 
 categoryRoute.get('/create', categoryController.createCategoryGet);
 categoryRoute.post('/create', categoryController.createCategoryPost);
-categoryRoute.post('/delete/:id', categoryController.deleteCategoryById);
+categoryRoute.get('/:id/update', categoryController.updateCategoryGet);
+categoryRoute.post('/:id/update', categoryController.updateCategoryPost);
+categoryRoute.post('/:id/delete', categoryController.deleteCategoryById);
 categoryRoute.get('/:id', itemController.getItemsByCategory);
 
 module.exports = categoryRoute;
